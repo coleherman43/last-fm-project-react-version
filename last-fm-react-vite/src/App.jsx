@@ -1,12 +1,14 @@
-// src/App.jsx
 import React, { useState } from 'react';
 import useLastFMData from './hooks/useLastFMData';
-import DisplayData from './components/DisplayData';
+import TopArtists from './components/TopArtists';
+import TopTracks from './components/TopTracks';
+import TopAlbums from './components/TopAlbums';
 import './style.css';
 
 const App = () => {
     const [username, setUsername] = useState('');
     const [inputValue, setInputValue] = useState('');
+    const [activeTab, setActiveTab] = useState('artists');
     const { topArtists, topAlbums, topTracks, loading, error } = useLastFMData(username);
 
     const handleSubmit = (e) => {
@@ -34,12 +36,38 @@ const App = () => {
             </form>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
+
             {username && (
-                <DisplayData
-                    topArtists={topArtists}
-                    topAlbums={topAlbums}
-                    topTracks={topTracks}
-                />
+                <div>
+                    {/* Tab Bar */}
+                    <div className="tab-bar">
+                        <button
+                            className={activeTab === 'artists' ? 'active' : ''}
+                            onClick={() => setActiveTab('artists')}
+                        >
+                            Top Artists
+                        </button>
+                        <button
+                            className={activeTab === 'tracks' ? 'active' : ''}
+                            onClick={() => setActiveTab('tracks')}
+                        >
+                            Top Tracks
+                        </button>
+                        <button
+                            className={activeTab === 'albums' ? 'active' : ''}
+                            onClick={() => setActiveTab('albums')}
+                        >
+                            Top Albums
+                        </button>
+                    </div>
+
+                    {/* Tab Content */}
+                    <div className="tab-content">
+                        {activeTab === 'artists' && <TopArtists artists={topArtists} />}
+                        {activeTab === 'tracks' && <TopTracks tracks={topTracks} />}
+                        {activeTab === 'albums' && <TopAlbums albums={topAlbums} />}
+                    </div>
+                </div>
             )}
         </div>
     );
