@@ -178,6 +178,6 @@ button:focus-visible {
 }
 
 /*For debugging */
-* {
+/* * {
   border: 1px solid red;
-}
+} */

@@ -1,12 +1,12 @@
 // src/App.jsx
 import React, { useState } from 'react';
 import useLastFMData from './hooks/useLastFMData';
-import DisplayData from './components/DisplayData';
 import './style.css';
 
 const App = () => {
     const [username, setUsername] = useState('');
     const [inputValue, setInputValue] = useState('');
+    const [activeTab, setActiveTab] = useState('artists'); // State to track active tab
     const { topArtists, topAlbums, topTracks, loading, error } = useLastFMData(username);
 
     const handleSubmit = (e) => {
@@ -34,12 +34,67 @@ const App = () => {
             </form>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
+
             {username && (
-                <DisplayData
-                    topArtists={topArtists}
-                    topAlbums={topAlbums}
-                    topTracks={topTracks}
-                />
+                <div>
+                    {/* Tab Bar */}
+                    <div className="tab-bar">
+                        <button
+                            className={activeTab === 'artists' ? 'active' : ''}
+                            onClick={() => setActiveTab('artists')}
+                        >
+                            Top Artists
+                        </button>
+                        <button
+                            className={activeTab === 'tracks' ? 'active' : ''}
+                            onClick={() => setActiveTab('tracks')}
+                        >
+                            Top Tracks
+                        </button>
+                        <button
+                            className={activeTab === 'albums' ? 'active' : ''}
+                            onClick={() => setActiveTab('albums')}
+                        >
+                            Top Albums
+                        </button>
+                    </div>
+
+                    {/* Tab Content */}
+                    <div className="tab-content">
+                        {activeTab === 'artists' && (
+                            <div>
+                                <h2>Top Artists</h2>
+                                <ol>
+                                    {topArtists.map((artist, index) => (
+                                        <li key={index}>{artist.name}</li>
+                                    ))}
+                                </ol>
+                            </div>
+                        )}
+
+                        {activeTab === 'tracks' && (
+                            <div>
+                                <h2>Top Tracks</h2>
+                                <ol>
+                                    {topTracks.map((track, index) => (
+                                        <li key={index}>{track.name}</li>
+                                    ))}
+                                </ol>
+                            </div>
+                        )}
+
+                        {activeTab === 'albums' && (
+                            <div>
+                                <h2>Top Albums</h2>
+                                <ol>
+                                    {topAlbums.map((album, index) => (
+                                        <li key={index}>{album.name}</li>
+                                    ))}
+                                </ol>
+                            </div>
+                        )}
+                    </div>
+                </div>
             )}
         </div>
     );
