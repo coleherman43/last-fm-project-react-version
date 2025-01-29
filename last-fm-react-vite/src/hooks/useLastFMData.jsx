@@ -1,51 +1,45 @@
 // src/hooks/useLastFMData.js
 import { useState, useEffect } from 'react';
+import { Search } from '../utils/search';
+
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const useLastFMData = (username) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [topArtists, setTopArtists] = useState([]);
+    const [topAlbums, setTopAlbums] = useState([]);
+    const [topTracks, setTopTracks] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`https://lastfm-api-endpoint/${username}`);
-        const result = await response.json();
-        setData(result);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+        if (username) {
+            const fetchData = async () => {
+                setLoading(true);
+                setError(null);
 
-    if (username) {
-      fetchData();
-    }
-  }, [username]);
+                try {
+                    const search = new Search(username, API_KEY);
 
-  return { data, loading, error };
+                    const artists = await search.getTopArtists();
+                    setTopArtists(artists.topartists.artist);
+
+                    const albums = await search.getTopAlbums();
+                    setTopAlbums(albums.topalbums.album);
+
+                    const tracks = await search.getTopTracks();
+                    setTopTracks(tracks.toptracks.track);
+                } catch (err) {
+                    setError('Error fetching user stats: ' + err.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchData();
+        }
+    }, [username]);
+
+    return { topArtists, topAlbums, topTracks, loading, error };
 };
 
 export default useLastFMData;
-
-// Old JS Class for data fetching
-class LastFM {
-    constructor(username) {
-      this.username = username;
-    }
-  
-    async fetchData() {
-      try {
-        const response = await fetch(`https://lastfm-api-endpoint/${this.username}`);
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-  }
-  
-  const lastFM = new LastFM('username');
-  lastFM.fetchData().then((data) => console.log(data));
-  

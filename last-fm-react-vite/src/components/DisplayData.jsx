@@ -1,4 +1,4 @@
-// components/DisplayData.jsx
+// src/components/DisplayData.jsx
 import React from 'react';
 
 const DisplayData = ({ topArtists, topAlbums, topTracks }) => {
