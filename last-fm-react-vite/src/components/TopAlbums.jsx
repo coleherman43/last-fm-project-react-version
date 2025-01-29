@@ -6,7 +6,7 @@ const TopAlbums = ({ albums }) => {
             <h2>Top Albums</h2>
             <ol>
                 {albums.map((album, index) => (
-                    <li key={index}>{index+1}. {album.name}</li>
+                    <li key={index}>{index+1}. {album.name} - {album.playcount} plays</li>
                 ))}
             </ol>
         </div>
