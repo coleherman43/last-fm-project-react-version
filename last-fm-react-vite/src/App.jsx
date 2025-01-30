@@ -9,6 +9,7 @@ const App = () => {
     const [username, setUsername] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [activeTab, setActiveTab] = useState('artists');
+    const [numResults, setNumResults] = useState(10); // State for number of results
     const { topArtists, topAlbums, topTracks, loading, error } = useLastFMData(username);
 
     const handleSubmit = (e) => {
@@ -39,6 +40,20 @@ const App = () => {
 
             {username && (
                 <div>
+                    {/* Dropdown to select number of results */}
+                    <div>
+                        <label htmlFor="numResults">Number of results: </label>
+                        <select
+                            id="numResults"
+                            value={numResults}
+                            onChange={(e) => setNumResults(Number(e.target.value))}
+                        >
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                        </select>
+                    </div>
+
                     {/* Tab Bar */}
                     <div className="tab-bar">
                         <button
@@ -64,10 +79,14 @@ const App = () => {
                     {/* Tab Content */}
                     <div className="tab-content">
                         {activeTab === 'artists' && (
-                            <TopArtists artists={topArtists} tracks={topTracks} />
+                            <TopArtists artists={topArtists} tracks={topTracks} numResults={numResults} />
                         )}
-                        {activeTab === 'tracks' && <TopTracks tracks={topTracks} />}
-                        {activeTab === 'albums' && <TopAlbums albums={topAlbums} />}
+                        {activeTab === 'tracks' && (
+                            <TopTracks tracks={topTracks} numResults={numResults} />
+                        )}
+                        {activeTab === 'albums' && (
+                            <TopAlbums albums={topAlbums} numResults={numResults} />
+                        )}
                     </div>
                 </div>
             )}
