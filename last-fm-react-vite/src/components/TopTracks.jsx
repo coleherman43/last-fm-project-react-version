@@ -10,7 +10,7 @@ const TopTracks = ({ tracks, numResults }) => {
             <h2>Top Tracks</h2>
             <ol>
                 {displayedTracks.map((track, index) => {
-                    const durationMs = track.duration * 1000; // Convert duration to milliseconds
+                    const durationMs = track.duration; // Convert duration to milliseconds
                     const totalTime = durationMs * track.playcount;
                     return (
                         <li key={index}>
