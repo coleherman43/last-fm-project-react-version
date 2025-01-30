@@ -1,16 +1,17 @@
 import React from 'react';
 import { formatTime } from '../utils/formatTime';
 
-const TopTracks = ({ tracks }) => {
+const TopTracks = ({ tracks, numResults }) => {
+    // Slice the tracks array to display only the selected number of results
+    const displayedTracks = tracks.slice(0, numResults);
+
     return (
         <div>
             <h2>Top Tracks</h2>
             <ol>
-                {tracks.map((track, index) => {
-                    console.debug(
-                        `Track: ${track.name}, Duration: ${track.duration}, Playcount: ${track.playcount}`
-                    );
-                    const totalTime = Number(track.duration) * track.playcount;
+                {displayedTracks.map((track, index) => {
+                    const durationMs = track.duration * 1000; // Convert duration to milliseconds
+                    const totalTime = durationMs * track.playcount;
                     return (
                         <li key={index}>
                             {track.name} - {track.playcount} plays (

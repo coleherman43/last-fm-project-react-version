@@ -177,6 +177,27 @@ button:focus-visible {
   }
 }
 
+/* style.css */
+select {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.87);
+  margin-bottom: 20px;
+}
+
+select:hover {
+  border-color: #646cff;
+}
+
+select:focus {
+  outline: none;
+  border-color: #646cff;
+  box-shadow: 0 0 5px rgba(100, 108, 255, 0.5);
+}
+
 /*For debugging */
 /* * {
   border: 1px solid red;
