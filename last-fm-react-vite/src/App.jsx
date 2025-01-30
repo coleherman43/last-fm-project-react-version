@@ -63,7 +63,9 @@ const App = () => {
 
                     {/* Tab Content */}
                     <div className="tab-content">
-                        {activeTab === 'artists' && <TopArtists artists={topArtists} />}
+                        {activeTab === 'artists' && (
+                            <TopArtists artists={topArtists} tracks={topTracks} />
+                        )}
                         {activeTab === 'tracks' && <TopTracks tracks={topTracks} />}
                         {activeTab === 'albums' && <TopAlbums albums={topAlbums} />}
                     </div>
